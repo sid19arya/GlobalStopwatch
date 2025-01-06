@@ -1,5 +1,8 @@
+import src.App;
+
 public class main {
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        App app = new App();
+
     }
 }
