@@ -2,6 +2,7 @@ package src;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class App {
@@ -9,6 +10,8 @@ public class App {
     public Watch watch;
 
     JLabel time;
+
+    public ExecutorService manager;
 
     public void GUI(){
         JFrame frame = new JFrame();
@@ -22,11 +25,25 @@ public class App {
 
         startButton.addActionListener(e -> {
             watch.Start();
+
+            manager.submit(() -> {
+                while (watch.active) {
+                    try {
+                        Thread.sleep(100); // Sleep for 100ms
+                    } catch (InterruptedException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    String formatted = watch.formattedTime();
+                    // Update the UI on the Event Dispatch Thread
+                    SwingUtilities.invokeLater(() -> time.setText("Time: " + formatted));
+                }
+            });
         });
 
         stopButton.addActionListener(e -> {
             long elapsed = watch.Stop();
-            time.setText("Time: " + elapsed);
+            String formatted = watch.formattedTime();
+            time.setText("Time: " + formatted);
         });
 
 
@@ -45,8 +62,9 @@ public class App {
 
     }
 
-    public App(){
+    public App(ExecutorService executor){
         watch = new Watch();
+        manager = executor;
         GUI();
     }
 }
