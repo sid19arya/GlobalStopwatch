@@ -1,3 +1,5 @@
+package src;
+
 public class ActiveWindow {
     // Load the native library
     static {
