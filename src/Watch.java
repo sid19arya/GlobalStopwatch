@@ -14,8 +14,6 @@ public class Watch {
     boolean active = false;
 
 
-
-
     public void Start(){
         curr_time = System.currentTimeMillis();
         active = true;
@@ -48,6 +46,4 @@ public class Watch {
 
         return String.format("%02d:%02d:%02d:%02d", hours, minutes, seconds, millis);
     }
-
-
 }
