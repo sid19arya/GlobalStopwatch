@@ -9,10 +9,18 @@ extern "C" {
 #endif
 /*
  * Class:     src_ActiveWindowTracker
- * Method:    startHook
+ * Method:    nativeStartHook
  * Signature: ()V
  */
-JNIEXPORT void JNICALL Java_src_ActiveWindowTracker_startHook
+JNIEXPORT void JNICALL Java_src_ActiveWindowTracker_nativeStartHook
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     src_ActiveWindowTracker
+ * Method:    nativeStopHook
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_src_ActiveWindowTracker_nativeStopHook
   (JNIEnv *, jobject);
 
 #ifdef __cplusplus
