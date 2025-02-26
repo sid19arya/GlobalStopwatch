@@ -24,8 +24,10 @@ public class App {
 
 
         startButton.addActionListener(e -> {
+            System.out.println("Start");
             watch.Start();
-
+            // Invoke a seperate thread to update the live stopwatch, whilst the Swing event thread can get
+            // continue listenings for events
             manager.submit(() -> {
                 while (watch.active) {
                     try {

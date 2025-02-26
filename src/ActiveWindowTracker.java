@@ -8,6 +8,8 @@ public class ActiveWindowTracker {
     // Start the native hook
     private Thread hookThread;
 
+    public WatchManager watchManager;
+
     // Native method declarations
     private native void nativeStartHook();
     private native void nativeStopHook();
@@ -35,24 +37,32 @@ public class ActiveWindowTracker {
 
     // Callback function that C will call
     public void onWindowChange(int processId, String title) {
-        System.out.println("Active window changed:");
-        System.out.println("PID: " + processId + ", Title: " + title);
+//        System.out.println("Active window changed:");
+//        System.out.println("PID: " + processId + ", Title: " + title);
+
+        this.watchManager.Start(processId, title);
     }
 
-    public static void main(String[] args) {
-        ActiveWindowTracker tracker = new ActiveWindowTracker();
-
-        // Start hook in background
-        tracker.startHook();
-
-        // Simulate the main application running
-        try {
-            Thread.sleep(20000); // Run for 20 seconds
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        System.out.println("Main thread exiting...");
-
+    public ActiveWindowTracker(WatchManager watchManager) {
+        this.startHook();
+        this.watchManager = watchManager;
+        System.out.println("Window Tracker started!");
     }
+
+//    public static void main(String[] args) {
+//        ActiveWindowTracker tracker = new ActiveWindowTracker();
+//
+//        // Start hook in background
+//        tracker.startHook();
+//
+//        // Simulate the main application running
+//        try {
+//            Thread.sleep(20000); // Run for 20 seconds
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//
+//        System.out.println("Main thread exiting...");
+//
+//    }
 }

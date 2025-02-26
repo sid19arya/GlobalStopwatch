@@ -1,6 +1,5 @@
 package src;
 
-
 public class Watch {
     int millis;
     int seconds;
@@ -13,10 +12,20 @@ public class Watch {
 
     boolean active = false;
 
+    String title;
+
+    public Watch(String title) {
+        this.title = title;
+    }
+    public Watch() {
+        this.title = "Untitled";
+    }
 
     public void Start(){
-        curr_time = System.currentTimeMillis();
-        active = true;
+        if (!active) {
+            curr_time = System.currentTimeMillis();
+            active = true;
+        }
     }
 
     public long Stop(){
@@ -28,8 +37,6 @@ public class Watch {
     public void Reset(){
         elapsedTime = 0;
     }
-
-
 
     public String formattedTime(){
         long t;

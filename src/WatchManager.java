@@ -1,27 +1,54 @@
 package src;
 
-import java.util.Dictionary;
 import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.Map;
 
 public class WatchManager {
-    Dictionary<String, Watch> watches = new Hashtable<String, Watch>();
+    Hashtable<Integer, Watch> watches = new Hashtable<Integer, Watch>();
     String ActiveWatch;
 
-//    This function reacts to a change in foreground
-    public void WindowChange(String newWindow){
-        Watch oldWatch = watches.get(ActiveWatch);
-        if (oldWatch != null){
-            oldWatch.Stop();
-        }
+    Integer activeWatchId;
 
-        if (watches.get(newWindow) == null){
-            watches.put(newWindow, new Watch());
-        }
-
-        ActiveWatch = newWindow;
-
-        watches.get(ActiveWatch).Start();
-
+    public WatchManager() {
+        activeWatchId = -1;
+        watches.put(activeWatchId, new Watch("Limbo"));
+        watches.get(activeWatchId).Start();
     }
 
+    public void Start(Integer watchId, String title) {
+
+        watches.get(activeWatchId).Stop();
+        activeWatchId = watchId;
+
+        if (watches.containsKey(watchId)) {
+//            System.out.println("Watch " + watchId + " started up");
+            watches.get(activeWatchId).Start();
+        }
+        else{
+//            System.out.println("Watch " + watchId + " created");
+           watches.put(activeWatchId, new Watch(title));
+           watches.get(activeWatchId).Start();
+        }
+    }
+
+    public void WatchReport(){
+        Iterator<Map.Entry<Integer, Watch>> iterator = this.watches.entrySet().iterator();
+        System.out.println("PID  | Title       | Time");
+        System.out.println("----------------------------");
+
+        while (iterator.hasNext()) {
+            Map.Entry<Integer, Watch> entry = iterator.next();
+            Integer pid = entry.getKey();
+            Watch watch = entry.getValue();
+
+            System.out.printf("%-4d | %-10s | %s%n", pid, watch.title, watch.formattedTime());
+        }
+    }
+
+
+
+
+
 }
+
